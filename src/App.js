@@ -1,25 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import Question from "./components/Question";
+import data from "./data/questions.json";
 
-function App() {
+const App = () => {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [formData, setFormData] = useState({});
+
+  const handleNext = (answer) => {
+    setFormData({ ...formData, ...answer });
+    setCurrentQuestion(currentQuestion + 1);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {currentQuestion < data.length ? (
+        <Question data={data[currentQuestion]} onNext={handleNext} />
+      ) : (
+        <div className="completion-message">
+          Thank you for completing the form!
+          <br />
+          Enjoy shopping with us
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default App;
